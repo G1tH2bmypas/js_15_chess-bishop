@@ -1,4 +1,6 @@
 const bishop = require("./index");
+const solution = require("./system/solution");
+const { getRandomInt } = require("./system/environment");
 
 test('Функция должна вернуть булиновое значение', () => {
 	const type = typeof bishop(3, 1, 7, 5);
@@ -40,4 +42,26 @@ test('Тест. x1: 6, y1: 2, x2: 8, y2: 1', () => {
 	const res = bishop(6, 2, 8, 1);
 
 	expect(res).toBe(false);
+});
+
+test('Auto: random outcomes', () => {
+	let failed = false;
+
+	for (let i = 0; i < 100; i++) {
+		const randX1 = getRandomInt(1, 8);
+		const randY1 = getRandomInt(1, 8);
+		const randX2 = getRandomInt(1, 8);
+		const randY2 = getRandomInt(1, 8);
+
+		if (randX1 === randX2 && randY1 === randY2) {
+			continue;
+		}
+
+		if (solution(randX1, randY1, randX2, randY2) !== bishop(randX1, randY1, randX2, randY2)) {
+			failed = 'failed';
+			break;
+		}
+	}
+
+	expect(failed).not.toBe('failed');
 });
